@@ -1,0 +1,212 @@
+basePath: /auth
+definitions:
+  models.User:
+    properties:
+      accessRights:
+        type: integer
+      id:
+        type: integer
+      login:
+        type: string
+    type: object
+  user.LoginBody:
+    properties:
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+  user.UpdateUserData:
+    properties:
+      accessRights:
+        type: integer
+      id:
+        type: integer
+      login:
+        type: string
+      password:
+        type: string
+    type: object
+  user.UserData:
+    properties:
+      accessRights:
+        type: integer
+      login:
+        type: string
+      password:
+        type: string
+    required:
+    - accessRights
+    - login
+    - password
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Diplom API
+  version: "1.0"
+paths:
+  /user:
+    get:
+      description: Возращает список id всех доступных user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              items:
+                type: integer
+              type: array
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get list of user ids
+      tags:
+      - User
+    post:
+      description: Создает пользователя. Доступен только админу
+      parameters:
+      - description: Данные пользователя для создания
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user.UserData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              $ref: '#/definitions/models.User'
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Create user
+      tags:
+      - User
+    put:
+      description: Обновляет пользователя. Доступен только админу
+      parameters:
+      - description: Данные пользователя для обновления
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user.UpdateUserData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              $ref: '#/definitions/models.User'
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Update user
+      tags:
+      - User
+  /user/{id}:
+    delete:
+      description: Удаляет пользователя. Доступен только админу
+      parameters:
+      - description: id User
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              $ref: '#/definitions/models.User'
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Delete user
+      tags:
+      - User
+    get:
+      description: Возращает Action соответсвующую указанному ID
+      parameters:
+      - description: id Action
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              $ref: '#/definitions/models.User'
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Get concrete Action
+      tags:
+      - Actions
+  /user/login:
+    post:
+      description: login
+      parameters:
+      - description: id Action
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user.LoginBody'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              $ref: '#/definitions/models.User'
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: LOGIN
+      tags:
+      - Actions
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"
