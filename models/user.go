@@ -12,7 +12,7 @@ const (
 
 type User struct {
 	ID uint
-	Login string
+	Login string `gorm:"uniqueIndex"`
 	Password []byte `json:"-"`
 	AccessRights AccessRight
 }

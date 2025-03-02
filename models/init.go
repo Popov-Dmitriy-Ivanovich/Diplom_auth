@@ -1,6 +1,7 @@
 package models
 
 import (
+	"log"
 	"os"
 	"sync"
 
@@ -44,12 +45,13 @@ func initDb() error {
 			Password: pHash,
 			AccessRights: AR_ALL,
 		}
-		if err := db.FirstOrCreate(&admin).Error; err != nil {
+		if err := db.FirstOrCreate(&admin, map[string]any{"login": "admin"}).Error; err != nil {
 			panic(err)
 		}
 		if err := db.Save(&admin).Error; err != nil {
 			panic(err)
 		}
+		log.Println("CREATED ADMIN")
 	}
 	
 

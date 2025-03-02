@@ -4,6 +4,7 @@ import (
 	"github.com/Popov-Dmitriy-Ivanovich/Diplom_auth/models"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
+	tgApi "github.com/Popov-Dmitriy-Ivanovich/Diplom_telegram/api"
 )
 
 type UserData struct {
@@ -43,7 +44,7 @@ func (u *User) Create() gin.HandlerFunc {
 		if err := db.Create(&user).Error; err != nil {
 			c.AbortWithError(500, err)
 		}
-
+		tgApi.Notify("Создан новый пользователь")
 		c.JSON(200, gin.H{"user": user})
 	}
 }
@@ -99,7 +100,7 @@ func (u *User) Update() gin.HandlerFunc {
 			c.AbortWithError(500, err)
 			return
 		}
-
+		tgApi.Notify("Обновлены данные пользователя")
 		c.JSON(200, gin.H{"user": user})
 	}
 }
@@ -127,6 +128,7 @@ func (u *User) Delete() gin.HandlerFunc {
 			c.AbortWithError(500, err)
 			return
 		}
+		tgApi.Notify("Пользователь удален")
 		c.JSON(200, gin.H{"user": user})
 	}
 }

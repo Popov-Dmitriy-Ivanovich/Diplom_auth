@@ -3,8 +3,8 @@ package user
 import (
 	"os"
 	"time"
-
-	authmodel "github.com/Popov-Dmitriy-Ivanovich/Diplom_auth/auth_model"
+	tgApi "github.com/Popov-Dmitriy-Ivanovich/Diplom_telegram/api"
+	"github.com/Popov-Dmitriy-Ivanovich/Diplom_auth/auth_model"
 	"github.com/Popov-Dmitriy-Ivanovich/Diplom_auth/middleware"
 	"github.com/Popov-Dmitriy-Ivanovich/Diplom_auth/models"
 	"github.com/gin-gonic/gin"
@@ -118,6 +118,7 @@ func (a *User) Login() gin.HandlerFunc {
 			c.AbortWithError(500, err)
 			return
 		}
+		tgApi.Notify("Произошел вход пользователя " + user.Login)
 		c.JSON(200, gin.H{"token": accessString, "user": user})
 	}
 }
